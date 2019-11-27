@@ -14,15 +14,17 @@ namespace BulletHellTest
         public List<IObject> Scenery { get; private set; }
         public Player Player { get; private set; }
         public GameMeta CurrentMeta { get; private set; }
+        public Rectangle SceneBounds { get; private set; }
 
         public Stage(GameMeta GameMeta)
         {
             CurrentMeta = GameMeta;
+            SceneBounds = new Rectangle(112, 0, 512, 764);
             Scenery = new List<IObject>();
             Player = new Player(GameMeta)
             {
                 RenderTexture = CurrentMeta.TextureCache["PlayerSprite"],
-                Position = new Vector2(300, 300),
+                Position = new Vector2(SceneBounds.X + SceneBounds.Width / 2, SceneBounds.Height - 128),
             };
 
             Scenery.Add(Player);
@@ -31,10 +33,15 @@ namespace BulletHellTest
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Begin();
-            for(int i = Scenery.Count - 1; i >= 0; --i)
+            for (int i = Scenery.Count - 1; i >= 0; --i)
             {
                 Scenery[i].Draw(spriteBatch);
             }
+            spriteBatch.End();
+
+            spriteBatch.Begin();
+            spriteBatch.Draw(CurrentMeta.TextureCache["Pixel"], new Rectangle(0, 0, SceneBounds.X, 764), Color.Black);
+            spriteBatch.Draw(CurrentMeta.TextureCache["Pixel"], new Rectangle(SceneBounds.X + SceneBounds.Width, 0, 764 - (SceneBounds.X + SceneBounds.Width), 764), Color.Black);
             spriteBatch.End();
         }
 

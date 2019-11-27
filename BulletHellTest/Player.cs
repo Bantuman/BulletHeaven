@@ -22,7 +22,16 @@ namespace BulletHellTest
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(RenderTexture, Rectangle, Color.White);
+            spriteBatch.Draw(RenderTexture, Rectangle, null, Color.White, 0, RenderTexture.Bounds.Size.ToVector2() * 0.5f, SpriteEffects.None, 1);
+        }
+
+        private void MoveBy(Vector2 deltaVector)
+        {
+            Vector2 newPosition = Position + deltaVector;
+            if ((GameMeta.GameHandle.currentScene as Stage).SceneBounds.Contains(newPosition))
+            {
+                Position = newPosition;
+            }
         }
 
         public override void Update(GameTime gameTime)
@@ -48,8 +57,9 @@ namespace BulletHellTest
             if (tempVelocity.Length() > 0)
             {
                 tempVelocity = Vector2.Normalize(tempVelocity) * 5;
-                Position += tempVelocity;
-            }     
+                MoveBy(new Vector2(tempVelocity.X, 0));
+                MoveBy(new Vector2(0, tempVelocity.Y));
+            }
         }
     }
 }

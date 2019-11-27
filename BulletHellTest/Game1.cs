@@ -9,9 +9,10 @@ namespace BulletHellTest
     /// </summary>
     public class Game1 : Game
     {
+        public IScene currentScene;
+
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
-        private IScene currentScene;
         private InputManager currentInputManager;
         private TextureCache currentTextureCache;
         private GameMeta currentMeta;
@@ -20,6 +21,11 @@ namespace BulletHellTest
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+
+            IsMouseVisible = true;
+            graphics.PreferredBackBufferWidth = 764;
+            graphics.PreferredBackBufferHeight = 764;
+            graphics.ApplyChanges();
         }
 
         /// <summary>
@@ -31,7 +37,7 @@ namespace BulletHellTest
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-           
+
             base.Initialize();
         }
 
@@ -44,7 +50,7 @@ namespace BulletHellTest
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            currentTextureCache = new TextureCache(Content);
+            currentTextureCache = new TextureCache(Content, GraphicsDevice);
             currentInputManager = new InputManager();
             currentMeta = new GameMeta(currentTextureCache, this, currentInputManager);
             currentScene = new Stage(currentMeta);
