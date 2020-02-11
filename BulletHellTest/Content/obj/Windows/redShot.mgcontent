@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/Users/Administratör.5CG62401YF/Documents/GitHub/BulletHeaven/BulletHellTest/Content/cirno the phantom.png</SourceFile>
-  <SourceTime>2019-11-07T08:43:26.279102+01:00</SourceTime>
-  <DestFile>C:/Users/Administratör.5CG62401YF/Documents/GitHub/BulletHeaven/BulletHellTest/Content/bin/Windows/cirno the phantom.xnb</DestFile>
-  <DestTime>2019-11-28T08:36:09.4559616+01:00</DestTime>
+  <SourceFile>C:/Users/Administratör.5CG62401YF/Documents/GitHub/BulletHeaven/BulletHellTest/Content/redShot.png</SourceFile>
+  <SourceTime>2019-11-28T09:21:45.2306374+01:00</SourceTime>
+  <DestFile>C:/Users/Administratör.5CG62401YF/Documents/GitHub/BulletHeaven/BulletHellTest/Content/bin/Windows/redShot.xnb</DestFile>
+  <DestTime>2019-11-28T09:22:54.0963975+01:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2017-03-01T16:05:36+01:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

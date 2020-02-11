@@ -15,11 +15,18 @@ namespace BulletHellTest
         public Player Player { get; private set; }
         public GameMeta CurrentMeta { get; private set; }
         public Rectangle SceneBounds { get; private set; }
+        public Rectangle CleanupBounds {
+            get {
+                Rectangle bound = SceneBounds;
+                bound.Inflate(128, 128);
+                return bound;
+            }
+        }
 
         public Stage(GameMeta GameMeta)
         {
             CurrentMeta = GameMeta;
-            SceneBounds = new Rectangle(112, 0, 512, 764);
+            SceneBounds = new Rectangle(0, 0, 512, 764);
             Scenery = new List<IObject>();
             Player = new Player(GameMeta)
             {
@@ -40,8 +47,10 @@ namespace BulletHellTest
             spriteBatch.End();
 
             spriteBatch.Begin();
-            spriteBatch.Draw(CurrentMeta.TextureCache["Pixel"], new Rectangle(0, 0, SceneBounds.X, 764), Color.Black);
-            spriteBatch.Draw(CurrentMeta.TextureCache["Pixel"], new Rectangle(SceneBounds.X + SceneBounds.Width, 0, 764 - (SceneBounds.X + SceneBounds.Width), 764), Color.Black);
+            int realHeight = SceneBounds.Height;
+            int realWidth = (int)(SceneBounds.Width * ((float)realHeight) / SceneBounds.Height);
+            spriteBatch.Draw(CurrentMeta.TextureCache["Pixel"], new Rectangle(0, 0, (764 - realWidth) / 2, realHeight), Color.Black);
+            spriteBatch.Draw(CurrentMeta.TextureCache["Pixel"], new Rectangle(764 - (764 - realWidth) / 2, 0, (764 - realWidth) / 2, realHeight), Color.Black);
             spriteBatch.End();
         }
 

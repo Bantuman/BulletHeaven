@@ -24,7 +24,9 @@ namespace BulletHellTest
 
             textureCache = new Dictionary<string, Texture2D>()
             {
+                ["Button"] = content.Load<Texture2D>("redShot"),
                 ["PlayerSprite"] = content.Load<Texture2D>("cirno the phantom"),
+                ["PlayerBullet"] = content.Load<Texture2D>("redShot"),
                 ["Pixel"] = tempPixelTexture
             };
         }

@@ -14,10 +14,10 @@ namespace BulletHellTest
     {
         public override Rectangle Rectangle { get => new Rectangle(Position.ToPoint(), Size); }
         public override Point Size { get => new Point(32, 64); }
+        public float Velocity { get; set; } = 400;
 
         public Player(GameMeta gameMeta) : base(gameMeta)
         {
-
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -36,27 +36,37 @@ namespace BulletHellTest
 
         public override void Update(GameTime gameTime)
         {
+            float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             Vector2 tempVelocity = new Vector2(0, 0);
-            if (GameMeta.InputManager[Keys.A])
+            if (GameMeta.InputManager[Keys.Left])
             {
-                tempVelocity += new Vector2(-1, 0);
+                tempVelocity = Vector2.Lerp(tempVelocity, new Vector2(-1, tempVelocity.Y), 0.5f);
             }
-            if (GameMeta.InputManager[Keys.D])
+            if (GameMeta.InputManager[Keys.Right])
             {
-                tempVelocity += new Vector2(1, 0);
+                tempVelocity = Vector2.Lerp(tempVelocity, new Vector2(1, tempVelocity.Y), 0.5f);
             }
-            if (GameMeta.InputManager[Keys.W])
+            if (GameMeta.InputManager[Keys.Up])
             {
-                tempVelocity += new Vector2(0, -1);
+                tempVelocity = Vector2.Lerp(tempVelocity, new Vector2(tempVelocity.X, -1), 0.5f);
             }
-            if (GameMeta.InputManager[Keys.S])
+            if (GameMeta.InputManager[Keys.Down])
             {
-                tempVelocity += new Vector2(0, 1);
+                tempVelocity = Vector2.Lerp(tempVelocity, new Vector2(tempVelocity.X, 1), 0.5f);
             }
-
+            if (GameMeta.InputManager[Keys.Z])
+            {
+                (GameMeta.GameHandle.currentScene as Stage).Scenery.Add(new Projectile(GameMeta)
+                {
+                    RenderTexture = GameMeta.TextureCache["PlayerBullet"],
+                    Position = Position,
+                    Direction = -Vector2.UnitY,
+                    Velocity = 500,
+                });
+            }
             if (tempVelocity.Length() > 0)
             {
-                tempVelocity = Vector2.Normalize(tempVelocity) * 5;
+                tempVelocity = Vector2.Normalize(tempVelocity) * Velocity * deltaTime;
                 MoveBy(new Vector2(tempVelocity.X, 0));
                 MoveBy(new Vector2(0, tempVelocity.Y));
             }

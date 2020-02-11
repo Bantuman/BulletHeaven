@@ -17,6 +17,8 @@ namespace BulletHellTest
         private TextureCache currentTextureCache;
         private GameMeta currentMeta;
 
+        public static UIObject WINDOW_HANDLE;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -26,6 +28,11 @@ namespace BulletHellTest
             graphics.PreferredBackBufferWidth = 764;
             graphics.PreferredBackBufferHeight = 764;
             graphics.ApplyChanges();
+
+            WINDOW_HANDLE = new UIObject();
+            WINDOW_HANDLE.Position = new UDim(Vector2.Zero, Vector2.Zero);
+            WINDOW_HANDLE.Size = new UDim(Vector2.Zero, new Vector2(GraphicsDevice.PresentationParameters.BackBufferWidth, GraphicsDevice.PresentationParameters.BackBufferHeight));
+
         }
 
         /// <summary>
@@ -37,7 +44,7 @@ namespace BulletHellTest
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
+            
             base.Initialize();
         }
 
@@ -53,7 +60,7 @@ namespace BulletHellTest
             currentTextureCache = new TextureCache(Content, GraphicsDevice);
             currentInputManager = new InputManager();
             currentMeta = new GameMeta(currentTextureCache, this, currentInputManager);
-            currentScene = new Stage(currentMeta);
+            currentScene = new Menu(currentMeta);
             // TODO: use this.Content to load your game content here
         }
 
@@ -76,6 +83,7 @@ namespace BulletHellTest
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+            WINDOW_HANDLE.Size = new UDim(Vector2.Zero, new Vector2(GraphicsDevice.PresentationParameters.BackBufferWidth, GraphicsDevice.PresentationParameters.BackBufferHeight));
             currentInputManager.Update();
             currentScene = currentScene.Update(gameTime);
 
