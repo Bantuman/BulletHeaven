@@ -76,3 +76,5 @@ C:\Users\Administratör.5CG62401YF\Documents\GitHub\BulletHeaven\BulletHellTest\
 C:\Users\Administratör.5CG62401YF\Documents\GitHub\BulletHeaven\BulletHellTest\obj\x86\Debug\BulletHellTest.pdb
 C:\Users\Administratör.5CG62401YF\Documents\GitHub\BulletHeaven\BulletHellTest\bin\Windows\x86\Debug\Content\redShot.xnb
 C:\Users\Administratör.5CG62401YF\Documents\GitHub\BulletHeaven\BulletHellTest\bin\Windows\x86\Debug\Content\Default.xnb
+C:\Users\Administratör.5CG62401YF\Documents\GitHub\BulletHeaven\BulletHellTest\bin\Windows\x86\Debug\NAudio.dll
+C:\Users\Administratör.5CG62401YF\Documents\GitHub\BulletHeaven\BulletHellTest\bin\Windows\x86\Debug\NAudio.xml
