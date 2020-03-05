@@ -138,6 +138,10 @@ namespace BulletHellTest
 
         public void AddDataRaw(float timePosition, string data)
         {
+            if (data.Length < 1)
+            {
+                return;
+            }
             foreach(LevelKeypoint keypoint in LevelData)
             {
                 if (keypoint.TimePosition == timePosition)
@@ -226,6 +230,11 @@ namespace BulletHellTest
         {
             AddDataRaw(timePosition, bulletSpawn.ParsedData);
         }
+
+        public void AddBossSpawn(BossSpawn bossSpawn)
+        {
+            AddDataRaw(0, bossSpawn.ParsedData);
+        }
         
         public void Draw(SpriteBatch spriteBatch)
         {
@@ -249,31 +258,46 @@ namespace BulletHellTest
                 }
             }
 
-            if (CurrentMeta.InputManager.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Space))
-            {
-                AddBulletSpawn(new BulletSpawn(CurrentMeta.InputManager.GetMousePosition().ToVector2(), Vector2.UnitY * 10));
-            }
 
             int totalNumber = 0;
             foreach(LevelKeypoint keypoint in LevelData)
             {
                 foreach(string keypointData in keypoint.KeypointData)
                 {
-                    string[] positionData = keypointData.Split('.');
+                    string[] keypointDataSplit = keypointData.Split('&');
+                    string spawnType = keypointDataSplit[0];
+                    string[] positionData = keypointDataSplit[1].Split('.');
                     Vector2 spawnPosition = StringDataToVector2(positionData[0]);
                     Vector2 spawnVelocity = StringDataToVector2(positionData[1]);
 
-                    float tempAlpha = Math.Abs(levelPosition - keypoint.TimePosition) * 5;
-                    Rectangle tempRectangle = new Rectangle(spawnPosition.ToPoint(), new Point(16, 16));
-                    if (tempRectangle.Contains(CurrentMeta.InputManager.GetMousePosition()) && CurrentMeta.InputManager.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Delete))
-                    {
-                        RemoveDataRaw(keypoint.TimePosition, keypointData);
-                    }
-
                     totalNumber++;
-                    tempAlpha = 1 - (((float)Math.Round(tempAlpha / 40) * 40) / levelLength);
-                    spriteBatch.Draw(CurrentMeta.TextureCache["Pixel"], tempRectangle, Color.Red * tempAlpha);
-                    spriteBatch.DrawString(CurrentMeta.GameHandle.Content.Load<SpriteFont>("Default"), keypoint.TimePosition.ToString(), spawnPosition, Color.White * tempAlpha);
+                    switch(spawnType)
+                    {
+                        case "BULLET":
+
+                            float tempAlpha = Math.Abs(levelPosition - keypoint.TimePosition) * 10;
+                            Rectangle bulletTempRectangle = new Rectangle(spawnPosition.ToPoint(), new Point(16, 16));
+                            if (bulletTempRectangle.Contains(CurrentMeta.InputManager.GetMousePosition()) && CurrentMeta.InputManager.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Delete))
+                            {
+                                RemoveDataRaw(keypoint.TimePosition, keypointData);
+                            }
+
+                            tempAlpha = 1 - (((float)Math.Round(tempAlpha / 2) * 2) / levelLength);
+                            spriteBatch.Draw(CurrentMeta.TextureCache["Pixel"], bulletTempRectangle, Color.Red * tempAlpha);
+                            spriteBatch.DrawString(CurrentMeta.GameHandle.Content.Load<SpriteFont>("Default"), keypoint.TimePosition.ToString(), spawnPosition, Color.White * tempAlpha);
+                            break;
+                        case "ENEMY":
+
+                            Rectangle enemyTempRectangle = new Rectangle(spawnPosition.ToPoint(), new Point(32, 32));
+                            if (enemyTempRectangle.Contains(CurrentMeta.InputManager.GetMousePosition()) && CurrentMeta.InputManager.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Delete))
+                            {
+                                RemoveDataRaw(keypoint.TimePosition, keypointData);
+                            }
+
+                            spriteBatch.Draw(CurrentMeta.TextureCache["Pixel"], enemyTempRectangle, Color.Green);
+                            spriteBatch.DrawString(CurrentMeta.GameHandle.Content.Load<SpriteFont>("Default"), "BOSS", spawnPosition, Color.White);
+                            break;
+                    }
                 }
             }
 
@@ -305,7 +329,6 @@ namespace BulletHellTest
             {
                 cursorDragging = true;
             }
-
             if (!CurrentMeta.InputManager.IsMouseLeftDown())
             {
                 cursorDragging = false;
@@ -325,8 +348,16 @@ namespace BulletHellTest
                 levelPosition = MathHelper.Clamp(levelPosition - cursorStep, 0, levelLength);
             }
 
-            cursorObject.Position = new UDim(levelPosition / levelLength, 0, 0, 0);
+            if (CurrentMeta.InputManager.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.I))
+            {
+                AddBulletSpawn(new BulletSpawn(CurrentMeta.InputManager.GetMousePosition().ToVector2(), Vector2.UnitY * 10));
+            }
 
+            if (CurrentMeta.InputManager.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.P))
+            {
+                AddBossSpawn(new BossSpawn(CurrentMeta.InputManager.GetMousePosition().ToVector2(), Vector2.UnitY * 10));
+            }
+            cursorObject.Position = new UDim(levelPosition / levelLength, 0, 0, 0);
             return this;
         }
     }
